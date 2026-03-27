@@ -1,0 +1,42 @@
+# Ignore the heavy stuff
+node_modules/
+.git/
+.expo/
+.next/
+
+# Ignore local build folders (keep `android/` for Android development builds)
+# If you were building for iOS, you would remove `ios/` from here.
+# For Android development builds, the `android/` directory MUST be included.
+# For iOS development builds, the `ios/` directory MUST be included.
+# So, only ignore the platform you are NOT building for.
+ios/ # Ignore iOS native project for Android build
+dist/ # General distribution/build output
+web-build/ # Expo web build output (from .gitignore)
+
+# Common temporary/build directories
+build/
+out/
+target/
+temp/
+tmp/
+cache/
+logs/
+
+# Ignore large media/assets you don't need for the build itself
+*.mp4
+*.mov
+*.zip
+*.avi # Add other common video formats
+*.webm
+*.mkv
+*.flv
+*.wmv
+*.gif # If there are large gifs not used as app assets
+*.tiff # Large image format
+*.psd # Photoshop files
+*.ai # Illustrator files
+
+# Ignore large data/model files (from .gitignore)
+data/
+checkpoints/
+Documentation/~$Model analysis.xlsx
