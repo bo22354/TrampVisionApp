@@ -31,6 +31,16 @@ extensions.configure(com.facebook.react.ReactSettingsExtension) { ex ->
 }
 expoAutolinking.useExpoModules()
 
+// Add dependencyResolutionManagement here, after plugins and expoAutolinking
+dependencyResolutionManagement {
+    // This setting tells Gradle to prefer repositories declared in individual project build.gradle files.
+    repositoriesMode.set(RepositoriesMode.PREFER_PROJECT)
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+
 rootProject.name = 'trampVision'
 
 expoAutolinking.useExpoVersionCatalog()
