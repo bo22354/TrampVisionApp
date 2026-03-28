@@ -31,17 +31,6 @@ extensions.configure(com.facebook.react.ReactSettingsExtension) { ex ->
 }
 expoAutolinking.useExpoModules()
 
-// Moved dependencyResolutionManagement block here
-dependencyResolutionManagement {
-    // This setting ensures that all projects (including subprojects) use the repositories defined here.
-    // If any subproject declares its own repositories, the build will fail, forcing consistency.
-    repositoriesMode.set(RepositoriesMode.PREFER_SETTINGS)
-    repositories {
-        mavenCentral()
-        google()
-    }
-}
-
 rootProject.name = 'trampVision'
 
 expoAutolinking.useExpoVersionCatalog()
