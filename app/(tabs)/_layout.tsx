@@ -1,9 +1,8 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { Tabs } from 'expo-router';
-import { View, Text, TouchableOpacity, StyleSheet, Platform, Animated } from 'react-native';
-import * as ImagePicker from 'expo-image-picker';
-import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
+import * as ImagePicker from 'expo-image-picker';
+import { Tabs, useRouter } from 'expo-router';
+import React, { useRef, useState } from 'react';
+import { Animated, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 function CustomTabBar({ state, descriptors, navigation }: any) {
   const activeIndex = state.index;
@@ -52,7 +51,10 @@ function CustomTabBar({ state, descriptors, navigation }: any) {
 
           <View style={styles.spacer} />
 
-          <TouchableOpacity style={styles.tabButton} onPress={() => goTo('results', 2)}>
+          <TouchableOpacity
+            style={styles.tabButton}
+            onPress={() => navigation.navigate('results', { screen: 'index' })}
+          >
             <Ionicons name={activeIndex === 2 ? 'speedometer' : 'speedometer-outline'} size={22} color={activeIndex === 2 ? '#111' : '#888'} />
             <Text style={[styles.label, activeIndex === 2 && styles.labelActive]}>Results</Text>
           </TouchableOpacity>
@@ -139,7 +141,7 @@ export default function Layout() {
       tabBar={(props) => <CustomTabBar {...props} />}
     >
       <Tabs.Screen name="index" options={{ title: 'Home' }} />
-      <Tabs.Screen name="record" options={{ title: 'Record' }} />
+      <Tabs.Screen name="trim" options={{ href: null }} />
       {/* <Tabs.Screen name="results" options={{ title: 'Results' }} /> */}
     </Tabs>
   );

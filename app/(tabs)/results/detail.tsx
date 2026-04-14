@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { SafeAreaView, View, Text, StyleSheet, ScrollView, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { ResizeMode, Video } from 'expo-av';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { Video, ResizeMode } from 'expo-av';
+import React, { useEffect, useState } from 'react';
+import { ActivityIndicator, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { storage } from '../../../utils/storage';
 
 const STORAGE_KEY = 'tramp_results_v1';
@@ -16,14 +16,15 @@ export default function ResultDetail() {
   const [entry, setEntry] = useState<any>(null);
   const router = useRouter();
 
+  const normalizedId = Array.isArray(id) ? id[0] : id;
+  const normalizedVideoUri = Array.isArray(videoUri) ? videoUri[0] : videoUri;
+  const normalizedStartMs = Array.isArray(startMs) ? startMs[0] : startMs;
+  const normalizedEndMs = Array.isArray(endMs) ? endMs[0] : endMs;
+
   console.log('[detail] Params received:', { id, videoUri, startMs, endMs });
 
   useEffect(() => {
     const load = async () => {
-      const normalizedId = Array.isArray(id) ? id[0] : id;
-      const normalizedVideoUri = Array.isArray(videoUri) ? videoUri[0] : videoUri;
-      const normalizedStartMs = Array.isArray(startMs) ? startMs[0] : startMs;
-      const normalizedEndMs = Array.isArray(endMs) ? endMs[0] : endMs;
 
       if (normalizedId) {
         try {
@@ -78,7 +79,14 @@ export default function ResultDetail() {
     load();
   }, [id, videoUri, startMs, endMs]);
 
-  const goBack = () => router.replace({ pathname: '/(tabs)/results' });
+  const goBack = () => {
+    if (router.canDismiss()) {
+      router.dismissTo({ pathname: '/(tabs)/results' });
+      return;
+    }
+
+    router.replace({ pathname: '/(tabs)/results' });
+  };
 
   if (!entry) {
     return (
@@ -100,7 +108,7 @@ export default function ResultDetail() {
 
         {entry.videoUri ? (
           <View style={styles.videoContainer}>
-            <Video source={{ uri: entry.videoUri }} style={styles.video} useNativeControls resizeMode={ResizeMode.COVER} isLooping />
+            <Video source={{ uri: entry.videoUri }} style={styles.video} useNativeControls resizeMode={ResizeMode.CONTAIN} isLooping />
           </View>
         ) : null}
 
@@ -122,7 +130,7 @@ export default function ResultDetail() {
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#f5f5f5', paddingHorizontal: 20, paddingBottom: 140 },
   header: { fontSize: 28, fontWeight: 'bold', marginBottom: 20, marginTop: 20, textAlign: 'center' },
-  videoContainer: { height: 200, width: '100%', borderRadius: 15, overflow: 'hidden', marginBottom: 20, backgroundColor: 'black' },
+  videoContainer: { height: 400, width: '85%', borderRadius: 15, overflow: 'hidden', marginBottom: 20, backgroundColor: 'black', alignSelf: 'center' },
   video: { flex: 1 },
   scoreCircle: { width: 120, height: 120, borderRadius: 60, backgroundColor: '#E8F5E9', justifyContent: 'center', alignItems: 'center', alignSelf: 'center', borderWidth: 5, borderColor: '#4CAF50', marginBottom: 20 },
   finalScore: { fontSize: 40, fontWeight: 'bold', color: '#2E7D32' },
@@ -130,6 +138,6 @@ const styles = StyleSheet.create({
   card: { backgroundColor: 'white', padding: 20, borderRadius: 15, shadowColor: '#000', shadowOpacity: 0.1, shadowRadius: 10, elevation: 5 },
   cardTitle: { fontSize: 16, fontWeight: '600', color: '#555', marginBottom: 10 },
   feedbackText: { fontSize: 16, color: '#666', fontStyle: 'italic', lineHeight: 22 },
-  backBtn: { marginBottom: 6 },
+  backBtn: { marginBottom: 6, marginLeft: 5, marginTop: 5},
   backText: { color: '#007AFF', fontWeight: '600' },
 });
